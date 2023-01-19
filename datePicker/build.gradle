@@ -1,6 +1,21 @@
 plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
+    id 'maven-publish'
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
+
+                groupId = 'com.github.imanih20'
+                artifactId = 'jalali-date-picker'
+                version = '1.0.0'
+            }
+        }
+    }
 }
 
 android {
@@ -13,6 +28,19 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
+        aarMetadata {
+            minCompileSdk = 21
+        }
+        testFixtures {
+            enable = true
+        }
+        publishing {
+            singleVariant("release") {
+                withSourcesJar()
+            }
+        }
+
+
     }
 
     buildTypes {

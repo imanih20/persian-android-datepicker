@@ -3,24 +3,25 @@ package com.mohyeddin.datepicker
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.mohyeddin.datepicker.date.DatePicker
+import com.mohyeddin.datepicker.date.DatePickerDialog
 import com.mohyeddin.datepicker.ui.theme.DatePickerTheme
-import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            val snackbarHostState = SnackbarHostState()
-            val scope = rememberCoroutineScope()
 
             DatePickerTheme {
 
@@ -29,20 +30,10 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Scaffold(
-                        snackbarHost = {
-                            SnackbarHost(hostState = snackbarHostState){
-                                Snackbar {
-                                    Text(text = it.visuals.message)
-                                }
-                            }
-                        }
-                    ) {
+                    Scaffold{
 
                         DP(Modifier.padding(it)){m->
-                            scope.launch {
-                                snackbarHostState.showSnackbar(m)
-                            }
+
                         }
                     }
                 }
@@ -51,10 +42,33 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DP(modifier: Modifier = Modifier,onDateChange: (String)->Unit){
+    var date by remember {
+        mutableStateOf("")
+    }
+    var showingDialog by remember {
+        mutableStateOf(false)
+    }
     Box(modifier = modifier){
-        DatePicker(onDateChange = onDateChange)
+        OutlinedTextField(
+            value = date,
+            onValueChange =  {date = it},
+            placeholder = {
+                Text(text = "1401-10-27")
+            },
+            trailingIcon = {
+                Icon(Icons.Default.DateRange, contentDescription = "" , modifier = Modifier.clickable {
+                    showingDialog = true
+                })
+            }
+        )
+        if (showingDialog)
+            DatePickerDialog(onDismissRequest = { showingDialog = false }, onSubmitClicked = {
+                date = it
+            })
+
     }
 }
 

@@ -12,6 +12,6 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-rootProject.name = "datePicker"
+rootProject.name = "my-artifact-id"
 include ':app'
 include ':datePicker'

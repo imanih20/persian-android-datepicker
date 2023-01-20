@@ -13,7 +13,6 @@ A persian date picker for android jetpack compose
  ```kotlin
 allprojects {
 	repositories {
-		...
 		maven { url 'https://jitpack.io' }
 	}
 }

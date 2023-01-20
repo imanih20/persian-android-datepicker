@@ -1,5 +1,7 @@
 package com.mohyeddin.datepicker.date
 
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.BorderStroke
@@ -38,7 +40,6 @@ import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.rememberPagerState
 import com.mohyeddin.datepicker.R
-import com.mohyeddin.datepicker.util.Date
 import com.mohyeddin.datepicker.util.MyText
 import com.mohyeddin.datepicker.util.getDoubleKey
 import com.mohyeddin.datepicker.util.isSmallDevice
@@ -47,15 +48,17 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun DatePicker(
-    initialDate : Date = Date(),
-    title: String = "انتخاب تاریخ",
-    colors: DatePickerColors = DatePickerDefaults.colors(),
-    yearRange: IntRange = IntRange(1390, 1410),
-    onDateChange: (String) -> Unit = {}
+    initialDay: Int,
+    initialMonth: Int,
+    initialYear: Int,
+    title: String,
+    colors: DatePickerColors,
+    yearRange: IntRange,
+    onDateChange: (String) -> Unit
 ){
     val datePickerState by remember {
         mutableStateOf(
-            DatePickerState(initialDate.calendar, colors, yearRange)
+            DatePickerState(JalaliCalendar(initialYear,initialMonth,initialDay), colors, yearRange)
         )
     }
     CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
@@ -132,8 +135,8 @@ internal fun DatePickerImpl(
                         modifier = Modifier
                             .zIndex(0.7f)
                             .clipToBounds(),
-                        enter = slideInVertically(initialOffsetY = { -it }),
-                        exit = slideOutVertically(targetOffsetY = { -it })
+                        enter = slideInVertically(initialOffsetY = { it }),
+                        exit = slideOutVertically(targetOffsetY = { it })
                     ) {
                         CalendarView(viewDate, state.selected,state.colors){
                             val date = onDateChange(viewYear,viewMonth,it)
@@ -356,50 +359,54 @@ private fun CalendarViewHeader(yearTitle: String, colors: DatePickerColors,yearP
                 )
             }
         }
-
-        Row(
-            Modifier
+        androidx.compose.animation.AnimatedVisibility(
+            !yearPickerShowing,
+            modifier = Modifier
                 .fillMaxHeight()
-                .align(Alignment.CenterEnd)
+                .align(Alignment.CenterEnd),
+            enter = fadeIn(),
+            exit = fadeOut()
         ) {
-            Icon(
-                Icons.Default.KeyboardArrowRight,
-                contentDescription = "Previous Month",
-                modifier = Modifier
-                    .testTag("dialog_date_previous_month")
-                    .size(24.dp)
-                    .clickable(onClick = {
-                        coroutineScope.launch {
-                            if (pagerState.currentPage - 1 >= 0) {
-                                pagerState.animateScrollToPage(
-                                    pagerState.currentPage - 1
-                                )
+            Row {
+                Icon(
+                    Icons.Default.KeyboardArrowRight,
+                    contentDescription = "Previous Month",
+                    modifier = Modifier
+                        .testTag("dialog_date_previous_month")
+                        .size(24.dp)
+                        .clickable(onClick = {
+                            coroutineScope.launch {
+                                if (pagerState.currentPage - 1 >= 0) {
+                                    pagerState.animateScrollToPage(
+                                        pagerState.currentPage - 1
+                                    )
+                                }
                             }
-                        }
-                    }),
-                tint = colors.calendarHeaderTextColor
-            )
+                        }),
+                    tint = colors.calendarHeaderTextColor
+                )
 
-            Spacer(modifier = Modifier.width(24.dp))
+                Spacer(modifier = Modifier.width(24.dp))
 
-            Icon(
-                Icons.Default.KeyboardArrowLeft,
-                contentDescription = "Next Month",
-                modifier = Modifier
-                    .testTag("dialog_date_next_month")
-                    .size(24.dp)
-                    .clickable(onClick = {
-                        coroutineScope.launch {
-                            if (pagerState.currentPage + 1 < pagerState.pageCount) {
-                                pagerState.animateScrollToPage(
-                                    pagerState.currentPage + 1
-                                )
+                Icon(
+                    Icons.Default.KeyboardArrowLeft,
+                    contentDescription = "Next Month",
+                    modifier = Modifier
+                        .testTag("dialog_date_next_month")
+                        .size(24.dp)
+                        .clickable(onClick = {
+                            coroutineScope.launch {
+                                if (pagerState.currentPage + 1 < pagerState.pageCount) {
+                                    pagerState.animateScrollToPage(
+                                        pagerState.currentPage + 1
+                                    )
+                                }
                             }
-                        }
-                    }),
-                tint = colors.calendarHeaderTextColor
-            )
+                        }),
+                    tint = colors.calendarHeaderTextColor
+                )
 
+            }
         }
     }
 }

@@ -11,7 +11,6 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.window.SecureFlagPolicy
-import com.mohyeddin.datepicker.util.Date
 import ir.huri.jcal.JalaliCalendar
 
 @Composable
@@ -19,7 +18,9 @@ fun DatePickerDialog(
     onDismissRequest: () -> Unit,
     onSubmitClicked: (String) -> Unit,
     title: String = "انتخاب تاریخ",
-    initialDate: Date = Date(),
+    initialDay: Int = JalaliCalendar().day,
+    initialMonth: Int = JalaliCalendar().month,
+    initialYear: Int = JalaliCalendar().year,
     colors: DatePickerColors = DatePickerDefaults.colors(),
     yearRange: IntRange = IntRange(1390,1410)
 ){
@@ -35,7 +36,9 @@ fun DatePickerDialog(
             Card {
                 Column {
                     DatePicker(
-                        initialDate,
+                        initialDay,
+                        initialMonth,
+                        initialYear,
                         title,
                         colors,
                         yearRange

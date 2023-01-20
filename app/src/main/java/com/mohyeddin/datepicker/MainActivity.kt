@@ -3,17 +3,12 @@ package com.mohyeddin.datepicker
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.mohyeddin.datepicker.date.DatePicker
+import androidx.compose.ui.unit.dp
 import com.mohyeddin.datepicker.date.DatePickerDialog
 import com.mohyeddin.datepicker.ui.theme.DatePickerTheme
 
@@ -30,10 +25,34 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
+                    var date by remember {
+                        mutableStateOf("")
+                    }
+                    var showDialog by remember {
+                        mutableStateOf(false)
+                    }
                     Scaffold{
-
-                        DP(Modifier.padding(it)){m->
-
+                        Column(
+                            Modifier
+                                .padding(it)
+                                .fillMaxSize(),
+                            verticalArrangement = Arrangement.Center,
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Text(text = date)
+                            Spacer(modifier = Modifier.size(15.dp))
+                            Button(onClick = {
+                                showDialog = true
+                            }) {
+                                Text(text = "date picker")
+                            }
+                            if (showDialog)
+                                DatePickerDialog(
+                                    onDismissRequest = { showDialog = false },
+                                    onSubmitClicked = {d->
+                                        date = d
+                                    }
+                                )
                         }
                     }
                 }
@@ -42,41 +61,3 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun DP(modifier: Modifier = Modifier,onDateChange: (String)->Unit){
-    var date by remember {
-        mutableStateOf("")
-    }
-    var showingDialog by remember {
-        mutableStateOf(false)
-    }
-    Box(modifier = modifier){
-        OutlinedTextField(
-            value = date,
-            onValueChange =  {date = it},
-            placeholder = {
-                Text(text = "1401-10-27")
-            },
-            trailingIcon = {
-                Icon(Icons.Default.DateRange, contentDescription = "" , modifier = Modifier.clickable {
-                    showingDialog = true
-                })
-            }
-        )
-        if (showingDialog)
-            DatePickerDialog(onDismissRequest = { showingDialog = false }, onSubmitClicked = {
-                date = it
-            })
-
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    DatePickerTheme {
-        DatePicker {
-        }
-    }
-}

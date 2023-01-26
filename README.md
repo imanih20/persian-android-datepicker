@@ -1,10 +1,8 @@
 # persian-android-datepicker
 A persian date picker for android jetpack compose
 
-![Screenshot_20230120_181519](https://user-images.githubusercontent.com/50891438/213735576-8ec5169c-e5b0-4831-ae20-e55c3387e34b.png =250x250)
-![Screenshot_20230120_181712](https://user-images.githubusercontent.com/50891438/213735598-cd34976d-bcbf-406d-9b48-2de6752fd7cd.png =250x250)
-![Screenshot_20230120_181728](https://user-images.githubusercontent.com/50891438/213735627-dd42a4f3-85ce-445e-9de7-4073de1a2915.png =250x250)
-![Screenshot_20230120_181712](https://user-images.githubusercontent.com/50891438/213735903-09d73ee2-b2f8-40fc-b7ff-91f0950f413b.png =250x250)
+<img src="https://user-images.githubusercontent.com/50891438/213735576-8ec5169c-e5b0-4831-ae20-e55c3387e34b.png" alt="Screenshot_20230120_181519" style="max-width: 25%;" width="200"> | <img src="https://user-images.githubusercontent.com/50891438/213857588-b5155ddc-78a0-4720-89b7-1e756e6477b4.png" alt="Screenshot_20230120_181712" style="max-width: 25%;" width="200"> | <img src="https://user-images.githubusercontent.com/50891438/213735627-dd42a4f3-85ce-445e-9de7-4073de1a2915.png" alt="Screenshot_20230120_181728" style="max-width: 25%;" width="200"> |  <img src="https://user-images.githubusercontent.com/50891438/213735903-09d73ee2-b2f8-40fc-b7ff-91f0950f413b.png" alt="Screenshot_20230120_181712" style="max-width: 25%;" width="200">
+
 
 ## Versions
 | Dependency                                                                                              |      Version |
@@ -13,7 +11,7 @@ A persian date picker for android jetpack compose
 | Compose compiler                                                                                        |      `1.3.2` |
 | Material3                                                                                               |      `1.0.1` |
 
-## Usage
+## Implementation
  Step 1.Add the JitPack repository to your build file 
  ```kotlin
 allprojects {

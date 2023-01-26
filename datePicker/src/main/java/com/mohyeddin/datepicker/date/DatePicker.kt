@@ -31,15 +31,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight.Companion.W400
 import androidx.compose.ui.text.font.FontWeight.Companion.W600
-import androidx.compose.ui.unit.LayoutDirection
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import androidx.compose.ui.unit.*
 import androidx.compose.ui.zIndex
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.rememberPagerState
 import com.mohyeddin.datepicker.R
+import com.mohyeddin.datepicker.util.AutoResizedText
 import com.mohyeddin.datepicker.util.MyText
 import com.mohyeddin.datepicker.util.getDoubleKey
 import com.mohyeddin.datepicker.util.isSmallDevice
@@ -413,8 +412,6 @@ private fun CalendarViewHeader(yearTitle: String, colors: DatePickerColors,yearP
 
 @Composable
 private fun CalendarHeader(title: String,colors: DatePickerColors,selectedHeader : String) {
-
-
     Box(
         Modifier
             .background(colors.headerBackgroundColor)
@@ -425,7 +422,7 @@ private fun CalendarHeader(title: String,colors: DatePickerColors,selectedHeader
                 text = title,
                 modifier = Modifier.paddingFromBaseline(top = if (isSmallDevice()) 24.dp else 32.dp),
                 color = colors.headerTextColor,
-                style = TextStyle(fontSize = 12.sp)
+                style = TextStyle(fontSize = 12.sp),
             )
 
             Box(
@@ -433,12 +430,26 @@ private fun CalendarHeader(title: String,colors: DatePickerColors,selectedHeader
                     .fillMaxWidth()
                     .paddingFromBaseline(top = if (isSmallDevice()) 0.dp else 64.dp)
             ) {
-                MyText(
-                    text = selectedHeader,
+                AutoResizedText(
+                    selectedHeader,
                     modifier = Modifier.align(Alignment.CenterStart),
                     color = colors.headerTextColor,
-                    style = TextStyle(fontSize = 30.sp, fontWeight = W400)
+                    style = TextStyle(fontSize = 30.sp, fontWeight = W400),
                 )
+//                MyText(
+//                    text = selectedHeader,
+//                    modifier = Modifier.align(Alignment.CenterStart),
+//                    color = colors.headerTextColor,
+//                    style = TextStyle(fontSize = textSize, fontWeight = W400),
+//                    overflow = TextOverflow.Ellipsis,
+//                    onTextLayout = { textLayoutResult ->
+//                        val maxCurrentLineIndex: Int = textLayoutResult.lineCount - 1
+//
+//                        if (textLayoutResult.isLineEllipsized(maxCurrentLineIndex)) {
+//                            textSize = textSize.times(textScaleReductionInterval)
+//                        }
+//                    }
+//                )
             }
 
             Spacer(Modifier.height(if (isSmallDevice()) 8.dp else 16.dp))

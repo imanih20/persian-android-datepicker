@@ -11,7 +11,7 @@ A persian date picker for android jetpack compose
 | Compose compiler                                                                                        |      `1.3.2` |
 | Material3                                                                                               |      `1.0.1` |
 
-## Usage
+## Implementation
  Step 1.Add the JitPack repository to your build file 
  ```kotlin
 allprojects {
